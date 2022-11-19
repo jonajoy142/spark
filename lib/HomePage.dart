@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
+import 'package:social_media_integration/DetailPage2.dart';
 import 'package:social_media_integration/auth_service.dart';
 import 'package:social_media_integration/detailPage.dart';
 
@@ -12,6 +13,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
@@ -34,21 +36,24 @@ class _MyHomePageState extends State<MyHomePage> {
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
+    
       body: Container(
           child: Column(children: [
         Container(
           height: size.height,
           width: size.width,
           decoration: BoxDecoration(
-            // ignore: prefer_const_constructors
-            gradient: LinearGradient(
-                colors: [
-                  Color(0xff955cd1),
-                  Color(0xff3fa2fa),
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.centerRight,
-                stops: [0.5, .95]),
+            
+            // gradient: LinearGradient(
+            //     colors: [
+            //       Color.fromARGB(255, 40, 98, 233),
+            //       Color(0xff3fa2fa),
+            //     ],
+           
+            //     begin: Alignment.topLeft,
+            //     end: Alignment.centerRight,
+            //     stops: [0.5, .95]),
+            color: Colors.blue[800]
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -106,7 +111,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           Text(
                             "Login With",
                             style: TextStyle(
-                                color: Colors.blue[900],
+                                color: Colors.blue[800],
                                 fontSize: 25,
                                 fontWeight: FontWeight.w800),
                           ),
@@ -135,8 +140,21 @@ class _MyHomePageState extends State<MyHomePage> {
                               width: 300,
                               height: 50,
                               child: SignInButton(
+                                
                                 Buttons.FacebookNew,
-                                onPressed: () {},
+                                onPressed: () async {
+                                  var details = await Firebaseservices()
+                                      .signInWithFacebook();
+                                  print(details);
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => HomeScreen2(
+                                              name: details['name'],
+                                              imageUrl: details['picture']
+                                                  ['data']['url'],
+                                              email: details['email'])));
+                                },
                               ),
                             ),
                           ),
